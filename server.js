@@ -3,6 +3,7 @@ const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const cors = require('cors');
 const lyricsFinder = require('lyrics-finder');
+const { Google, Musixmatch } = require("@flytri/lyrics-finder");
 const bodyParser = require('body-parser');
 
 const app = new express();
@@ -15,7 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
 app.get('/lyrics', async (req,res) => {
-  const lyrics = await lyricsFinder(req.query.artist, req.query.track) || "No Lyrics Found"
+  const lyrics = await Google(req.query.track + req.query.artist, "en") || "No Lyrics Found"
+  // const lyrics = await lyricsFinder(req.query.artist, req.query.track) || "No Lyrics Found"
 
   res.json({
     lyrics
