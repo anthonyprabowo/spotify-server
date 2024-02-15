@@ -16,7 +16,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
 app.get('/lyrics', async (req,res) => {
-  const lyrics = await Google(req.query.track + req.query.artist, "en") || "No Lyrics Found"
+  let lyrics;
+  try {
+    lyrics = await Google(req.query.track + req.query.artist, "en") || "No Lyrics Found"
+  }
+  catch(e) {
+    lyrics = {
+      lyrics: "Lyrics Not Found"
+    }
+  }
   // const lyrics = await lyricsFinder(req.query.artist, req.query.track) || "No Lyrics Found"
 
   res.json({
